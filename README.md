@@ -13,9 +13,9 @@
 
 ---
 
-This repository bundles **three automation workflows** (n8n, Make) with AI integration (OpenAI, Gemini), deployable standalone or via Docker. Each subfolder contains the exported workflow, assets and, when applicable, a frontend or demo.
+Ce dépôt rassemble **trois flux de travail automatisés** (n8n, Make) avec intégration de l'intelligence artificielle (OpenAI, Gemini), déployables de manière autonome ou via Docker. Chaque sous-dossier contient le flux de travail exporté, les ressources associées et, le cas échéant, un frontend ou une démonstration.
 
-### Repository structure
+### Structure du dépôt
 
 ```
 no-low-code/
@@ -32,22 +32,22 @@ no-low-code/
     └── assets/
 ```
 
-### Technical Core
+### Cœur technique
 
-| Layer | Stack |
+| Couche | Technologies |
 |-------|--------|
 | **Orchestration** | n8n, Make |
-| **AI** | OpenAI GPT-3.5, Google Gemini |
+| **IA** | OpenAI GPT-3.5, Google Gemini |
 | **Scraping** | Apify (TikTok, Instagram) |
-| **Storage** | Airtable, Google Sheets, JSON (file) |
+| **Stockage** | Airtable, Google Sheets, JSON (fichier) |
 | **APIs** | Gmail API, TikTok (via Apify) |
-| **Runtime** | Docker (Gmail), Make/n8n cloud (others) |
+| **Exécution** | Docker (Gmail), Make/n8n cloud (autres) |
 
-### Global architecture
+### Architecture globale
 
-**Research context** : This repository is used for research on **how to collect and use data from social networks and communication channels** (email, TikTok, Instagram, RSS) **through no-code / low-code automation tools**. The goal is to assess orchestration (n8n, Make), scraping (Apify), AI enrichment (LLM, vision) and storage (Airtable, Google Sheets) to build reproducible pipelines without heavy custom development.
+**Contexte de recherche** : Ce dépôt est utilisé dans le cadre de recherches sur **les méthodes de collecte et d'exploitation de données issues des réseaux sociaux et canaux de communication** (e-mails, TikTok, Instagram, flux RSS) **à l'aide d'outils d'automatisation no-code / low-code**. L'objectif est d'évaluer l'orchestration (n8n, Make), le scraping (Apify), l'enrichissement par l'IA (LLM, vision) et le stockage (Airtable, Google Sheets) afin de construire des pipelines reproductibles sans développement lourd sur mesure.
 
-The three workflows share a single high-level pattern: **data sources → orchestration → AI enrichment → storage or delivery**.
+Les trois flux de travail partagent le même modèle de haut niveau : **sources de données → orchestration → enrichissement IA → stockage ou livraison**.
 
 ```mermaid
 flowchart LR
@@ -58,114 +58,94 @@ flowchart LR
 
 ---
 
-## Workflows
+## Flux de travail (Workflows)
 
 ### [Gmail AI Dashboard](gmail/)
 
-End-to-end pipeline: fetch Gmail via the official API, analyse with OpenAI (summaries, urgency detection), then serve results in a **web interface** (sort, pin, archive, filters). One-command deploy with **Docker**. Ideal for centralising email monitoring and prioritising messages without opening Gmail.
+Pipeline de bout en bout : récupération des e-mails Gmail via l'API officielle, analyse avec OpenAI (résumés, détection d'urgence), puis affichage des résultats dans une **interface web** (tri, épinglage, archivage, filtres). Déploiement en une seule commande avec **Docker**. Idéal pour centraliser le suivi des e-mails et prioriser les messages sans ouvrir Gmail.
 
-```
-gmail/
-├── docker-compose.yml
-├── json/workflow.json
-├── assets/
-└── frontend/
-```
-
-**Install (this workflow only)**
+**Installation (ce flux uniquement)**
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
 cd no-low-code && git sparse-checkout set gmail && cd gmail
 ```
 
-| Role | Details |
+| Rôle | Détails |
 |------|--------|
-| Extraction | Automatic fetch of latest emails (Gmail API, 24h window) |
-| Analysis | Summaries + urgency detection (OpenAI GPT-3.5) |
-| UI | Vanilla JS dashboard (HTML5, CSS3, localStorage, Lucide) |
-| Deploy | `docker-compose` (n8n + static server) |
+| Extraction | Récupération automatique des derniers e-mails (API Gmail, fenêtre de 24h) |
+| Analyse | Résumés + détection d'urgence (OpenAI GPT-3.5) |
+| Interface | Tableau de bord en JS natif (HTML5, CSS3, localStorage, Lucide) |
+| Déploiement | `docker-compose` (n8n + serveur statique) |
 
 ![Gmail Workflow](gmail/assets/n8n-workflow.png)
 
-*n8n workflow: trigger, Gmail fetch, OpenAI analysis, write JSON.*
+*Flux n8n : déclencheur, récupération Gmail, analyse OpenAI, écriture du JSON.*
 
 ![Gmail Frontend](gmail/assets/front-page.png)
 
-*Web dashboard: AI summary, urgency badge, filters and email actions.*
+*Tableau de bord web : résumé de l'IA, indicateur d'urgence, filtres et actions sur les e-mails.*
 
 ---
 
 ### [Multi-Scraper IA](multi-scraper/)
 
-Multi-source automated monitoring: aggregate **RSS feeds** (NVIDIA, OpenAI, Google, Microsoft…) and **Instagram** tech accounts via Apify, enrich with GPT summaries and Gemini image analysis, **deduplicate**, then export to **Google Sheets**. Run an AI monitoring dashboard with no code. **Demo** : [Google Sheet](https://docs.google.com/spreadsheets/d/17JXOTxNk7-EDYpSQIKgBH-hyClpwn7jkmSknl3Azs1A/edit).
+Veille automatisée multi-source : agrégation de **flux RSS** (NVIDIA, OpenAI, Google, Microsoft…) et de comptes tech **Instagram** via Apify, enrichissement par résumés GPT et analyse d'images par Gemini, **déduplication**, puis export vers **Google Sheets**. Faites tourner un tableau de bord de veille IA sans code. **Démo** : [Google Sheet](https://docs.google.com/spreadsheets/d/17JXOTxNk7-EDYpSQIKgBH-hyClpwn7jkmSknl3Azs1A/edit).
 
-```
-multi-scraper/
-├── json/workflow.json
-└── assets/
-```
-
-**Install (this workflow only)**
+**Installation (ce flux uniquement)**
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
 cd no-low-code && git sparse-checkout set multi-scraper && cd multi-scraper
 ```
 
-| Role | Details |
+| Rôle | Détails |
 |------|--------|
-| Aggregation | RSS + Instagram (Apify) |
-| Enrichment | GPT-3.5 summaries + Gemini Pro image analysis |
-| Deduplication | Pre-export processing to avoid duplicates |
-| Export | Google Sheets (Title, URL, date, source, AI summary) |
+| Agrégation | RSS + Instagram (Apify) |
+| Enrichissement | Résumés GPT-3.5 + analyse d'images par Gemini Pro |
+| Déduplication | Traitement pré-export pour éviter les doublons |
+| Export | Google Sheets (Titre, URL, date, source, résumé de l'IA) |
 
 ![Make Workflow](multi-scraper/assets/make-workflow.png)
 
-*Make scenario: RSS + Instagram aggregation, OpenAI + Gemini enrichment, deduplication, Google Sheets export.*
+*Scénario Make : agrégation RSS + Instagram, enrichissement OpenAI + Gemini, déduplication, export Google Sheets.*
 
 ![Multi-Scraper Data](multi-scraper/assets/data-sheet.png)
 
-*Google Sheets output: title, URL, date, source, AI summary.*
+*Rendu Google Sheets : titre, URL, date, source, résumé de l'IA.*
 
 ---
 
 ### [TikTok Intelligence](tiktok/)
 
-TikTok extraction by **keywords** or **accounts**: metrics (views, likes, comments, shares), **VTT subtitle** extraction, summaries and insights via OpenAI, then save to **Airtable**. Useful for creator monitoring, trends or video content analysis.
+Extraction TikTok par **mots-clés** ou **comptes** : statistiques (vues, likes, commentaires, partages), extraction de **sous-titres VTT**, résumés et analyses stratégiques via OpenAI, puis sauvegarde sur **Airtable**. Utile pour le suivi des créateurs, la veille de tendances ou l'analyse de contenu vidéo.
 
-```
-tiktok/
-├── json/workflow.json
-└── assets/
-```
-
-**Install (this workflow only)**
+**Installation (ce flux uniquement)**
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
 cd no-low-code && git sparse-checkout set tiktok && cd tiktok
 ```
 
-| Role | Details |
+| Rôle | Détails |
 |------|--------|
-| Source | TikTok via Apify (keywords or handles) |
-| Metrics | Views, likes, comments, shares |
-| Transcripts | Automatic VTT subtitles |
-| Analysis | Summaries and insights OpenAI → Airtable |
+| Source | TikTok via Apify (mots-clés ou identifiants de compte) |
+| Statistiques | Vues, likes, commentaires, partages |
+| Transcriptions | Extraction automatique des sous-titres VTT |
+| Analyse | Résumés et analyses OpenAI → Airtable |
 
 ![TikTok Workflow](tiktok/assets/n8n-workflow.png)
 
-*n8n workflow: web form, Apify TikTok, VTT + OpenAI, Airtable.*
+*Flux n8n : formulaire web, Apify TikTok, sous-titres VTT + OpenAI, Airtable.*
 
 ![TikTok Request form](tiktok/assets/request-form.png)
 
-*Web form: keywords, accounts, period, results.*
+*Formulaire web : mots-clés, comptes, période, résultats.*
 
 ![TikTok Data](tiktok/assets/data-table.png)
 
-*Airtable table: video URL, author, metrics, transcript, AI summary.*
+*Table Airtable : URL de la vidéo, auteur, statistiques, transcription, résumé de l'IA.*
 
 ---
 
-Each workflow is **self-contained**: clone the subfolder, import the JSON into n8n or Make, set credentials (API keys, OAuth, Apify tokens), and run. No custom backend is required beyond the orchestrator and cloud services (Airtable, Sheets, Gmail).
+Chaque flux de travail est **autonome** : clonez le sous-dossier, importez le fichier JSON dans n8n ou Make, configurez vos identifiants (clés d'API, OAuth, jetons Apify) et lancez l'exécution. Aucun backend sur mesure n'est requis en dehors de l'orchestrateur et des services cloud connectés (Airtable, Google Sheets, Gmail).
