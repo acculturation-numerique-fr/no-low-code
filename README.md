@@ -67,7 +67,7 @@ Pipeline de bout en bout : récupération des e-mails Gmail via l'API officielle
 **Installation (ce flux uniquement)**
 
 ```bash
-git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
+git clone --filter=blob:none --sparse https://github.com/acculturation-numerique-fr/no-low-code.git
 cd no-low-code && git sparse-checkout set gmail && cd gmail
 ```
 
@@ -95,7 +95,7 @@ Veille automatisée multi-source : agrégation de **flux RSS** (NVIDIA, OpenAI, 
 **Installation (ce flux uniquement)**
 
 ```bash
-git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
+git clone --filter=blob:none --sparse https://github.com/acculturation-numerique-fr/no-low-code.git
 cd no-low-code && git sparse-checkout set multi-scraper && cd multi-scraper
 ```
 
@@ -123,7 +123,7 @@ Extraction TikTok par **mots-clés** ou **comptes** : statistiques (vues, likes,
 **Installation (ce flux uniquement)**
 
 ```bash
-git clone --filter=blob:none --sparse https://github.com/RomeoCavazza/no-low-code.git
+git clone --filter=blob:none --sparse https://github.com/acculturation-numerique-fr/no-low-code.git
 cd no-low-code && git sparse-checkout set tiktok && cd tiktok
 ```
 
